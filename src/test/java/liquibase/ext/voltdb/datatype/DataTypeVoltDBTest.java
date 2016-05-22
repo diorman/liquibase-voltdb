@@ -32,4 +32,9 @@ public abstract class DataTypeVoltDBTest {
 
         assertFalse(getType().supports(new liquibase.database.core.MySQLDatabase()));
     }
+
+    @Test
+    public void getPriority() {
+        assertEquals(LiquibaseDataType.PRIORITY_DATABASE, getType().getPriority());
+    }
 }

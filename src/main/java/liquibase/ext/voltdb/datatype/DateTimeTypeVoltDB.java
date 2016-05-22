@@ -7,6 +7,11 @@ import liquibase.database.Database;
 
 public class DateTimeTypeVoltDB extends DateTimeType {
     @Override
+    public int getPriority() {
+        return PRIORITY_DATABASE;
+    }
+
+    @Override
     public boolean supports(Database database) {
         return database instanceof VoltDBDatabase;
     }
