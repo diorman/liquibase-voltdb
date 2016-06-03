@@ -3,6 +3,9 @@ package liquibase.ext.voltdb.database;
 import liquibase.database.AbstractJdbcDatabase;
 import liquibase.database.DatabaseConnection;
 import liquibase.exception.DatabaseException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 public class VoltDBDatabase extends AbstractJdbcDatabase {
     private static final String PRODUCT_NAME = "VoltDB";
@@ -64,5 +67,31 @@ public class VoltDBDatabase extends AbstractJdbcDatabase {
     public boolean supportsDDLInTransaction() {
         return false;
     }
-}
 
+    @Override
+    public int getDatabaseMajorVersion() throws DatabaseException {
+        int majorVersion;
+
+        // Hack to get rid of annoying message in org.voltdb.jdbc.JDBC4DatabaseMetaData#getDatabaseMajorVersion
+        PrintStream defaultOut = System.out;
+
+        PrintStream tmpOut = new PrintStream(new OutputStream() {
+            @Override
+            public void write(int arg0) throws IOException {}
+        });
+
+        System.setOut(tmpOut);
+
+        try {
+            try {
+                majorVersion = super.getDatabaseMajorVersion();
+            } finally {
+                System.setOut(defaultOut);
+            }
+        } catch (DatabaseException e) {
+            throw new DatabaseException(e);
+        }
+
+        return majorVersion;
+    }
+}
