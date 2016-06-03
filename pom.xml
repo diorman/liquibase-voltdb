@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>Liquibase Extension: VoltDB Support</name>
-    <description>Adds support for SAP's MaxDB</description>
+    <description>Adds support for VoltDB</description>
     <url>https://github.com/diorman/liquibase-voltdb</url>
 
     <licenses>
